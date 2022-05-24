@@ -11,6 +11,7 @@
         <div
           class="lead text-white text-center m-1 py-3 bg-vue-dark rounded hover-class"
           :class="{ 'bg-vue-green': ['C', '*', '/', '-', '+', '%', '='].includes(n) }"
+          @click="action(n)"
         >
           {{ n }}
         </div>
@@ -31,6 +32,22 @@ export default {
       calculatorValue: "",
       calculatorKeys: ["C", "*", "/", "-", 7, 8, 9, "+", 4, 5, 6, "%", 1, 2, 3, "=", 0, "."],
     };
+  },
+  methods: {
+    action(n) {
+      /* assign value */
+      if (!isNaN(n) || n === ".") {
+        this.calculatorValue += n + "";
+      }
+      /* clear value */
+      if (n === "C") {
+        this.calculatorValue = "";
+      }
+      /* percent */
+      if (n === "%") {
+        this.calculatorValue = this.calculatorValue / 100 + "";
+      }
+    },
   },
 };
 </script>
