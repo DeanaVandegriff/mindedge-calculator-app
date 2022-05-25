@@ -1,7 +1,7 @@
 <template>
-  <div class="p-3" style="max-width: 400px; margin: 50px auto; background: #234">
+  <div class="p-3" style="max-width: 400px; margin: 50px auto; background: lightblue">
     <!--calculator result */ -->
-    <div class="w-full rounded m-1 p-3 text-end lead font-weight bold text-white bg-vue-dark">
+    <div class="w-full rounded m-1 p-3 text-end lead font-weight bold text-white bg-secondary">
       {{ calculatorValue || 0 }}
     </div>
 
@@ -10,7 +10,7 @@
       <div class="col-3" v-for="n in calculatorKeys" :key="n">
         <div
           class="lead text-white text-center m-1 py-3 bg-vue-dark rounded hover-class"
-          :class="{ 'bg-vue-green': ['C', '*', '/', '-', '+', '%', '='].includes(n) }"
+          :class="{ 'bg-vue-green': ['C', '+/-', '%', '/', '*', '-', '+', '='].includes(n) }"
           @click="action(n)"
         >
           {{ n }}
@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       calculatorValue: "",
-      calculatorKeys: ["C", "*", "/", "-", 7, 8, 9, "+", 4, 5, 6, "%", 1, 2, 3, "=", 0, "."],
+      calculatorKeys: ["C", "+/-", "%", "/", 7, 8, 9, "*", 4, 5, 6, "-", 1, 2, 3, "+", 0, ".", "save", "="],
     };
   },
   methods: {
@@ -47,6 +47,11 @@ export default {
       if (n === "%") {
         this.calculatorValue = this.calculatorValue / 100 + "";
       }
+      /* negative */
+      if (n === "+/-") {
+        this.calculatorValue = this.calculatorValue * -1;
+      }
+
       if (["/", "*", "-", "+"].includes(n)) {
         this.operator = n;
         this.previousCalculatorValue = this.calculatorValue;

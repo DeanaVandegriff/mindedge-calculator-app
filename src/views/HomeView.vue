@@ -1,7 +1,6 @@
 <template>
-  <div class="home">
-    <SimpleCalculator></SimpleCalculator>
-  </div>
+  <div class="home"></div>
+  <SimpleCalculator></SimpleCalculator>
 </template>
 
 <script>
