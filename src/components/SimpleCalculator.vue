@@ -1,3 +1,5 @@
+import axios from "axios";
+
 <template>
   <div class="p-3" style="max-width: 400px; margin: 50px auto; background: lightblue">
     <!--calculator result */ -->
@@ -18,6 +20,9 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-lg-12" id="history_log"></div>
+  </div>
 </template>
 
 <script>
@@ -30,7 +35,8 @@ export default {
   data() {
     return {
       calculatorValue: "",
-      calculatorKeys: ["C", "+/-", "%", "/", 7, 8, 9, "*", 4, 5, 6, "-", 1, 2, 3, "+", 0, ".", "save", "="],
+      calculatorKeys: ["C", "+/-", "%", "/", 7, 8, 9, "*", 4, 5, 6, "-", 1, 2, 3, "+", 0, ".", "history", "="],
+      calculations: [],
     };
   },
   methods: {
@@ -64,8 +70,12 @@ export default {
         this.operator = null;
       }
     },
+    historyLog: function () {
+    axios.get("http://localhost:3000/calculations.json").then((response) => {
+      this.calculations = response.data;
+      console.log("Calculations", this.calculations);
+    });
   },
-};
 </script>
 
 <style scoped>
