@@ -1,5 +1,3 @@
-import axios from "axios";
-
 <template>
   <div class="p-3" style="max-width: 400px; margin: 50px auto; background: lightblue">
     <!--calculator result */ -->
@@ -17,13 +15,6 @@ import axios from "axios";
         >
           {{ n }}
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-12" id="history_log">
-      <div v-for="calculation in calculations" v-bind:key="calculation.id">
-        <h2>{{ calculation.value1 }}</h2>
       </div>
     </div>
   </div>
@@ -74,12 +65,8 @@ export default {
         this.operator = null;
       }
     },
-    historyLog: function () {
-    axios.get("http://localhost:3000/calculations.json").then((response) => {
-      this.calculations = response.data;
-      console.log("Calculations", this.calculations);
-    });
   },
+};
 </script>
 
 <style scoped>
