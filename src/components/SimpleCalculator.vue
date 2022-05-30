@@ -21,7 +21,11 @@ import axios from "axios";
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-12" id="history_log"></div>
+    <div class="col-lg-12" id="history_log">
+      <div v-for="calculation in calculations" v-bind:key="calculation.id">
+        <h2>{{ calculation.value1 }}</h2>
+      </div>
+    </div>
   </div>
 </template>
 
