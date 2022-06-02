@@ -1,42 +1,5 @@
-<!-- <template>
-  <div class="home">
-    <SimpleCalculator></SimpleCalculator>
-
-    <div v-for="calculation in calculations" v-bind:key="calculation.id"> -->
-<!-- <h2>{{ calculation.value1 }}</h2>
-    </div> -->
-<!-- </div>
-</template> -->
--->
-
-<!-- <script>
-// @ is an alias to /src
-import SimpleCalculator from "@/components/SimpleCalculator.vue";
-// import axios from "axios"; -->
-
-<!-- export default {
-  name: "HomeView",
-  components: {
-    SimpleCalculator, -->
-<!-- },
-  // data: function () {
-  //   return {
-  //     message: "",
-  //     calculations: [],
-  //   };
-  // }, -->
-<!-- // methods: {
-  //   historyLog: function () {
-  //   axios.get("http://localhost:3000/calculations.json").then((response) => {
-  //     this.calculations = response.data;
-  //     console.log("Calculations", this.calculations);
-  //   });
-  // },
-};
-</script> -->
-
 <template>
-  <div class="p-3" style="max-width: 400px; margin: 10px auto; background: lightblue">
+  <div class="p-3" style="max-width: 400px; margin: 0px auto; background: lightblue">
     <!--calculator result */ -->
     <div class="w-full rounded m-1 p-3 text-end lead font-weight bold text-white bg-secondary">
       {{ calculatorValue || 0 }}
@@ -47,7 +10,7 @@ import SimpleCalculator from "@/components/SimpleCalculator.vue";
       <div class="col-3" v-for="n in calculatorKeys" :key="n">
         <div
           class="lead text-white text-center m-1 py-3 bg-vue-dark rounded hover-class"
-          :class="{ 'bg-vue-green': ['C', '+/-', '%', '/', '*', '-', '+', '='].includes(n) }"
+          :class="{ 'bg-vue-green': ['C', 'S', 'H', '%', '/', '*', '-', '+', '='].includes(n) }"
           @click="action(n)"
         >
           {{ n }}
@@ -55,21 +18,27 @@ import SimpleCalculator from "@/components/SimpleCalculator.vue";
       </div>
     </div>
   </div>
+
+  <div class="courses-new">
+    <form class="form-inline">
+      <p>To Save: Enter expression and press S</p>
+      <div class="course-group">
+        <input class="form-control-mx-auto" style="width: 200px" type="text" v-model="newCalcParams.expression" />
+      </div>
+    </form>
+  </div>
+
   <div>
     <div class="container">
       <table class="table table-bordered">
         <thead class="thead-light">
-          <!-- <tr>
-            <th scope="col">History</th>
-          </tr> -->
+          <tr>
+            <th scope="col">Press H for History</th>
+          </tr>
         </thead>
         <tbody>
           <tr v-for="calculation in calculations" v-bind:key="calculation.id">
-            <td>{{ calculation.value1 }}</td>
-            <td>{{ calculation.operator }}</td>
-            <td>{{ calculation.value2 }}</td>
-            <td>{{ calculation.equals }}</td>
-            <td>{{ calculation.result }}</td>
+            <td>{{ calculation.expression }}</td>
           </tr>
         </tbody>
       </table>
@@ -89,8 +58,9 @@ export default {
   data() {
     return {
       calculatorValue: "",
-      calculatorKeys: ["C", "+/-", "%", "/", 7, 8, 9, "*", 4, 5, 6, "-", 1, 2, 3, "+", 0, ".", "history", "="],
+      calculatorKeys: ["C", "S", "H", "%", 7, 8, 9, "/", 4, 5, 6, "*", 1, 2, 3, "-", 0, ".", "=", "+"],
       calculations: [],
+      newCalcParams: {},
     };
   },
   methods: {
@@ -119,14 +89,18 @@ export default {
       }
       if (n === "=") {
         this.calculatorValue = eval(this.previousCalculatorValue + this.operator + this.calculatorValue);
-
         this.previousCalculatorValue = "";
         this.operator = null;
       }
-      if (n === "history")
+      if (n === "H")
         axios.get("http://localhost:3000/calculations.json").then((response) => {
           this.calculations = response.data;
           console.log("Calculations", this.calculations);
+        });
+      if (n === "S")
+        axios.post("http://localhost:3000/calculations.json", this.newCalcParams).then((response) => {
+          console.log("calculation entered", response.data);
+          this.calculations.push(response.data);
         });
     },
   },
